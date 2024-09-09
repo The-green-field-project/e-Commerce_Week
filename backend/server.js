@@ -19,7 +19,7 @@ const db = require("./database/index.js");
 // db.dropDB();
 //! Note: This command is executed only once when resetting the database
 
-// db.syncDB();
+db.syncDB();
 //! Note: This command is executed only once during the initial synchronization of models with the database
 
 db.connectDB();
@@ -29,7 +29,7 @@ const productRoutes = require("./routes/product.route");
 app.use("/api/products", productRoutes);
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3100;
 app.listen(PORT, () => {
   console.log("-".repeat(30));
   console.log(`🟢 Server running on : http://localhost:${PORT}`);

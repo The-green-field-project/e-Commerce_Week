@@ -1,9 +1,8 @@
-// Define the User model
+// models/user.model.js
 module.exports = (connection, DataTypes) => {
   const User = connection.define(
     "User",
     {
-      // Define columns
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -26,9 +25,16 @@ module.exports = (connection, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      role: {
+        type: DataTypes.ENUM("admin", "client", "seller"),
+        allowNull: false,
+      },
+      wishlist: {
+        type: DataTypes.JSON,
+        allowNull: true, // Utilisé principalement pour les clients
+      },
     },
     {
-      // Model options
       tableName: "users",
       timestamps: true,
     }
