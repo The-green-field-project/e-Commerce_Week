@@ -1,7 +1,25 @@
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Button from "./UI/ButtonPrimary.js";
 import Footer from "./UI/Footer.js";
 import Header from "./UI/Header.js";
+
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import { decrement, increment } from "./redux/counterSlice";
+
+const Counter = () => {
+  const count = useSelector((state) => state.counter.value);
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <Button onClick={() => dispatch(decrement())} text={"-"}></Button>
+      <h1>{count}</h1>
+      <Button onClick={() => dispatch(increment())} text={"+"}></Button>
+    </div>
+  );
+};
 
 // Import your pages/components
 const Home = () => {
@@ -9,6 +27,11 @@ const Home = () => {
     <div>
       <h1>Home Page</h1>
       <p>Welcome to the Home Page!</p>
+
+      <div className="App">
+        <p>The Counter by Redux</p>
+        <Counter />
+      </div>
     </div>
   );
 };
