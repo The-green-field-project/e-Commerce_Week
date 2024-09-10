@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Footer from "./ui/Footer.js";
-import Header from "./ui/Header.js";
+import Footer from "./UI/Footer.js";
+import Header from "./UI/Header.js";
 
 // Import your pages/components
 const Home = () => {
