@@ -1,12 +1,15 @@
+import ComputerIcon from "@mui/icons-material/Computer";
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Button from "./UI/ButtonPrimary.js";
+
 import Footer from "./UI/Footer.js";
 import Header from "./UI/Header.js";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment } from "./redux/counterSlice";
+import { original } from "@reduxjs/toolkit";
 
 const Counter = () => {
   const count = useSelector((state) => state.counter.value);

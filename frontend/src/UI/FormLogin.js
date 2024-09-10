@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import Button from "./PrimaryButton";
+import Button from "./ButtonPrimary.js";
 /* Styled Components */
 const PrimaryButton = styled(Button)(({ theme }) => ({
   backgroundColor: "#D9534F",

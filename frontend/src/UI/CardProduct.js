@@ -1,109 +1,178 @@
-import React from "react";
-import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  Box,
-  IconButton,
-  Chip,
-} from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import StarIcon from "@mui/icons-material/Star";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import Rating from "@mui/material/Rating";
+import { Box, Button, IconButton, Paper, Typography } from "@mui/material";
+import React from "react";
 
-/**
- * ProductCard Component
- * Displays product details with an image, price, rating, and action buttons.
- *
- * @param {Object} props - The component props.
- * @param {Object} props.product - The product details { image, name, originalPrice, salePrice, rating, reviews }.
- * @param {function} props.onAddToWishlist - Function to handle adding the product to the wishlist.
- * @param {function} props.onViewDetails - Function to handle viewing product details.
- * @returns {JSX.Element} A styled product card component.
- */
-const ProductCard = ({ product, onAddToWishlist, onViewDetails }) => {
+/* Main ProductCard Component */
+const ProductCard = ({ product, addToCart, viewProduct }) => {
+  const {
+    image,
+    name,
+    originalPrice,
+    discountedPrice,
+    discount,
+    rating,
+    reviews,
+  } = product;
+
+  // Function to render stars based on the rating value
+  const renderStars = () => {
+    const fullStars = Math.floor(rating);
+    const emptyStars = 5 - fullStars;
+
+    return (
+      <>
+        {[...Array(fullStars)].map((_, index) => (
+          <StarIcon
+            key={`full-${index}`}
+            sx={{ color: "#FFC107", fontSize: "18px" }}
+          />
+        ))}
+        {[...Array(emptyStars)].map((_, index) => (
+          <StarBorderIcon
+            key={`empty-${index}`}
+            sx={{ color: "#FFC107", fontSize: "18px" }}
+          />
+        ))}
+      </>
+    );
+  };
+
   return (
-    <Card
+    <Paper
+      elevation={1}
       sx={{
-        maxWidth: 250,
-        // borderRadius: "12px",
-        boxShadow: 0,
-        overflow: "visible",
+        borderRadius: "12px",
+        overflow: "hidden",
+        padding: 2,
         position: "relative",
-        padding: "10px",
-        margin: "auto",
+        width: "250px",
+        "&:hover .hoverButton": {
+          // CSS to show the button on hover
+          opacity: 1,
+          bottom: "10px",
+        },
       }}
     >
-      {/* Action Buttons */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: 10,
-          right: 10,
-          display: "flex",
-          flexDirection: "column",
-          gap: 1,
-        }}
-      >
-        <IconButton
-          onClick={onAddToWishlist}
-          sx={{ backgroundColor: "#fff", boxShadow: 1 }}
+      {/* Discount Badge */}
+      {discount && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 30,
+            left: 30,
+            backgroundColor: "#D9534F",
+            color: "#fff",
+            padding: "4px 8px",
+            borderRadius: "4px",
+            fontSize: "16px",
+            fontWeight: "bold",
+            zIndex: 6,
+          }}
         >
-          <FavoriteBorderIcon />
-        </IconButton>
-        <IconButton
-          onClick={onViewDetails}
-          sx={{ backgroundColor: "#fff", boxShadow: 1 }}
+          -{discount}%
+        </Box>
+      )}
+
+      {/* Product Image and Action Icons */}
+      <Box sx={{ position: "relative", textAlign: "center", paddingBottom: 2 }}>
+        <img
+          onClick={viewProduct}
+          src={image}
+          alt={name}
+          style={{ width: "100%", height: "auto", borderRadius: "8px" }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+          }}
         >
-          <VisibilityOutlinedIcon />
-        </IconButton>
+          <IconButton
+            color="inherit"
+            sx={{
+              backgroundColor: "#fff",
+              padding: "6px",
+              borderRadius: "50%",
+            }}
+          >
+            <FavoriteBorderIcon />
+          </IconButton>
+          <IconButton
+            onClick={viewProduct}
+            color="inherit"
+            sx={{
+              backgroundColor: "#fff",
+              padding: "6px",
+              borderRadius: "50%",
+            }}
+          >
+            <VisibilityOutlinedIcon />
+          </IconButton>
+        </Box>
+
+        {/* Add To Cart Button - Visible on Hover */}
+        <Button
+          onClick={addToCart}
+          variant="contained"
+          className="hoverButton"
+          sx={{
+            position: "absolute",
+            bottom: "-40px", // Hidden initially
+            left: "50%",
+            transform: "translateX(-50%)",
+            backgroundColor: "#000",
+            color: "#fff",
+            padding: "8px 16px",
+            borderRadius: "20px",
+            opacity: 0,
+            transition: "all 0.3s ease",
+            "&:hover": {
+              backgroundColor: "#333",
+            },
+          }}
+        >
+          Add To Cart
+        </Button>
       </Box>
 
-      {/* Product Image */}
-      <CardMedia
-        component="img"
-        height="180"
-        image={product.image}
-        alt={product.name}
-        sx={{ borderRadius: "8px", backgroundColor: "#f5f5f5" }}
-      />
+      {/* Product Name */}
+      <Typography variant="body1" sx={{ fontWeight: "bold", marginBottom: 1 }}>
+        {name}
+      </Typography>
 
-      {/* Product Details */}
-      <CardContent sx={{ padding: "10px 0", textAlign: "left" }}>
+      {/* Pricing */}
+      <Box
+        sx={{ display: "flex", alignItems: "center", gap: 1, marginBottom: 1 }}
+      >
         <Typography
           variant="body1"
-          sx={{ fontWeight: "bold", marginBottom: "5px" }}
+          sx={{ color: "#D9534F", fontWeight: "bold" }}
         >
-          {product.name}
+          {discountedPrice && "$" + discountedPrice}
         </Typography>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Typography
-            variant="body2"
-            sx={{ color: "#D9534F", fontWeight: "bold" }}
-          >
-            ${product.salePrice}
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{ textDecoration: "line-through", color: "text.secondary" }}
-          >
-            {product.originalPrice && "$" + product.originalPrice}
-          </Typography>
-        </Box>
+        <Typography
+          variant="body2"
+          sx={{ textDecoration: "line-through", color: "text.secondary" }}
+        >
+          {originalPrice && "$" + originalPrice}
+        </Typography>
+      </Box>
 
-        {/* Rating */}
-        <Box sx={{ display: "flex", alignItems: "center", marginTop: 1 }}>
-          <Rating value={product.rating} readOnly size="small" />
-          <Typography
-            variant="body2"
-            sx={{ marginLeft: 0.5, color: "text.secondary" }}
-          >
-            ({product.reviews})
-          </Typography>
-        </Box>
-      </CardContent>
-    </Card>
+      {/* Rating */}
+      <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+        {rating && renderStars()}
+        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+          {reviews && "(" + reviews + ")"}
+        </Typography>
+      </Box>
+    </Paper>
   );
 };
 
