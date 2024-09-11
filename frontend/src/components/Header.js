@@ -1,5 +1,5 @@
-import logo from "../assets/logo.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
@@ -19,7 +19,9 @@ import {
   Typography,
 } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 /* Styled Components */
 const Search = styled("div")(({ theme }) => ({
@@ -61,25 +63,60 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 /* Main Header Component */
-const Header = () => {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+const Header = ({ isAuthenticated, isAdmin, isSeller, logout }) => {
+  /*  Define links corresponding to the list items */
+  let links = [
+    { label: "Home", path: "/" },
+    { label: "About", path: "/about" },
+    { label: "Sign Up", path: "/register" },
+  ];
+  if (isAuthenticated) {
+    links.pop();
+  }
+  if (isAdmin) {
+    links.push({ label: "Dashboard", path: "/admin" });
+  }
+  if (isSeller) {
+    links.push({ label: "Dashboard", path: "/seller" });
+  }
+  /* Drawer Component */
+  const DrawerContent = ({ handleDrawerToggle }) => {
+    const navigate = useNavigate();
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+    return (
+      <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+        <Typography variant="h6" sx={{ my: 0 }}></Typography>
+        <List>
+          {links.map((link, index) => (
+            <ListItem
+              button="true"
+              key={index}
+              onClick={() => navigate(link.path)}
+            >
+              <ListItemText primary={link.label} />
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    );
+  };
+  const navigate = useNavigate();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Optimized handler for drawer toggle using useCallback
+  const handleDrawerToggle = useCallback(() => {
+    setMobileOpen((prev) => !prev);
+  }, []);
+
+  // Optimized logout function
+  const handleLogout = () => {
+    logout();
   };
 
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 0 }}></Typography>
-      <List>
-        {["Home", "Contact", "About", "Sign Up"].map((text, index) => (
-          <ListItem button key={index}>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
+  // Re-render when isAuthenticated changes
+  useEffect(() => {
+    // This useEffect runs when isAuthenticated changes, ensuring the component re-renders
+  }, [isAuthenticated]);
 
   return (
     <AppBar
@@ -122,14 +159,17 @@ const Header = () => {
             textAlign: { xs: "center", md: "left" },
           }}
         >
-          {/* Use an img tag for the logo if it's an image */}
-          <img src={logo} alt="Logo" style={{ height: "30px" }} />
-          {/* Adjust the src to your logo path */}
+          <img
+            onClick={() => navigate("/")}
+            src={logo}
+            alt="Logo"
+            style={{ height: "30px", cursor: "pointer" }}
+          />
         </Typography>
 
         {/* Desktop Navigation Links */}
         <Box sx={{ display: { xs: "none", md: "flex" }, gap: 6 }}>
-          {["Home", "Contact", "About", "Sign Up"].map((text, index) => (
+          {links.map((link, index) => (
             <Typography
               key={index}
               variant="body1"
@@ -137,14 +177,15 @@ const Header = () => {
                 cursor: "pointer",
                 fontWeight: "500",
                 borderBottom: "2px solid transparent",
-                transition: "border-bottom 0.3s ease, color 0.3s ease", // Adding transition for border and color
+                transition: "border-bottom 0.3s ease, color 0.3s ease",
                 "&:hover": {
                   borderBottom: "2px solid #D9534F",
-                  color: "#D9534F", // Optional: Change color on hover
+                  color: "#D9534F",
                 },
               }}
+              onClick={() => navigate(link.path)}
             >
-              {text}
+              {link.label}
             </Typography>
           ))}
         </Box>
@@ -170,19 +211,31 @@ const Header = () => {
               <ShoppingCartOutlinedIcon />
             </Badge>
           </IconButton>
-          <IconButton
-            sx={{
-              backgroundColor: "#D9534F",
-              color: "#fff",
-              borderRadius: "50%",
-              padding: "8px",
-            }}
-          >
-            <AccountCircleIcon />
-          </IconButton>
-          <IconButton color="inherit">
-            <PersonOutlineIcon />
-          </IconButton>
+          {isAuthenticated ? (
+            <>
+              <IconButton
+                sx={{
+                  backgroundColor: "#D9534F",
+                  color: "#fff",
+                  borderRadius: "50%",
+                  padding: "8px",
+                  "&:hover": {
+                    backgroundColor: "#C74742",
+                  },
+                }}
+                onClick={() => navigate("/profile")}
+              >
+                <AccountCircleIcon />
+              </IconButton>
+              <IconButton color="inherit" onClick={handleLogout}>
+                <ExitToAppIcon />
+              </IconButton>
+            </>
+          ) : (
+            <IconButton color="inherit" onClick={() => navigate("/user")}>
+              <PersonOutlineIcon />
+            </IconButton>
+          )}
         </Box>
       </Toolbar>
 
@@ -193,7 +246,7 @@ const Header = () => {
             <SearchIcon />
           </SearchIconWrapper>
           <StyledInputBase
-            placeholder="Cherchez sur Jumia"
+            placeholder="What are you looking for?"
             inputProps={{ "aria-label": "search" }}
           />
         </Search>
@@ -212,7 +265,7 @@ const Header = () => {
           "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
         }}
       >
-        {drawer}
+        <DrawerContent handleDrawerToggle={handleDrawerToggle} />
       </Drawer>
     </AppBar>
   );

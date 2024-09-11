@@ -1,72 +1,129 @@
-import ComputerIcon from "@mui/icons-material/Computer";
 import React from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Button from "./UI/ButtonPrimary.js";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
 
-import Footer from "./UI/Footer.js";
-import Header from "./UI/Header.js";
+//Main Components
+import Footer from "./components/Footer.js";
+import Header from "./components/Header.js";
+import Loading from "./components/Loading.js";
 
-//redux
-import { useDispatch, useSelector } from "react-redux";
-import { decrement, increment } from "./redux/counterSlice";
-import { original } from "@reduxjs/toolkit";
+//Custom hooks
+import { useAuth } from "./hooks/useAuth";
 
-const Counter = () => {
-  const count = useSelector((state) => state.counter.value);
-  const dispatch = useDispatch();
+//Pages
+import About from "./pages/About.js";
+import AdminDashboard from "./pages/AdminDashboard.js";
+import Login from "./pages/authentication/login";
+import Register from "./pages/authentication/register";
+import Home from "./pages/Home.js";
+import NotFound from "./pages/NotFound.js";
+import SellerDashboard from "./pages/SellerDashboard.js";
 
-  return (
-    <div>
-      <Button onClick={() => dispatch(decrement())} text={"-"}></Button>
-      <h1>{count}</h1>
-      <Button onClick={() => dispatch(increment())} text={"+"}></Button>
-    </div>
-  );
-};
-
-// Import your pages/components
-const Home = () => {
-  return (
-    <div>
-      <h1>Home Page</h1>
-      <p>Welcome to the Home Page!</p>
-
-      <div className="App">
-        <p>The Counter by Redux</p>
-        <Counter />
-      </div>
-    </div>
-  );
-};
-const About = () => {
-  return (
-    <div>
-      <h1>About Page</h1>
-      <p>This is the About Page where you can learn more about us.</p>
-    </div>
-  );
-};
-const NotFound = () => {
-  return (
-    <div>
-      <h1>404 Not Found</h1>
-      <p>Oops! The page you are looking for does not exist.</p>
-    </div>
-  );
-};
-
+// Main App Component
 export default function App() {
   return (
     <Router>
-      <Header />
+      <AppContent />
+      {/* Extracted App content to ensure it uses Router context */}
+    </Router>
+  );
+}
+
+// Extracted App Content
+function AppContent() {
+  const {
+    isAuthenticated,
+    isAdmin,
+    isSeller,
+    loading,
+    login,
+    register,
+    logout,
+  } = useAuth();
+
+  // Handling loading state if authentication state is pending
+  if (loading) {
+    return <Loading />;
+  }
+
+  return (
+    <>
+      <Header
+        isAuthenticated={isAuthenticated}
+        isAdmin={isAdmin}
+        isSeller={isSeller}
+        logout={logout}
+      />
       <main>
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+
+          {/* Authentication Routes */}
+          <Route
+            path="/login"
+            element={
+              !isAuthenticated ? <Login login={login} /> : <Navigate to="/" />
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              !isAuthenticated ? (
+                <Register register={register} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+
+          {/* Protected User Routes */}
+          <Route
+            path="/user"
+            element={
+              isAuthenticated ? <Navigate to="/" /> : <Navigate to="/login" />
+            }
+          />
+
+          {/* Protected Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              isAuthenticated && isAdmin ? (
+                <AdminDashboard />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+
+          {/* Protected Seller Routes */}
+          <Route
+            path="/seller"
+            element={
+              isAuthenticated && isSeller ? (
+                <SellerDashboard />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+
+          {/* Catch-all for 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      <Footer />
-    </Router>
+      <Footer
+        isAuthenticated={isAuthenticated}
+        isAdmin={isAdmin}
+        isSeller={isSeller}
+        logout={logout}
+      />
+    </>
   );
 }

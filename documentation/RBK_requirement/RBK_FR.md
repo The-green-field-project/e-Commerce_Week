@@ -53,9 +53,10 @@ En tant que projet de commerce électronique, plusieurs fonctionnalités peuvent
 
 ### Vendeur :
 
-- En tant que vendeur, je veux m'inscrire à un nouveau compte vendeur.
-- En tant que vendeur, je veux me connecter à mon compte vendeur de manière sécurisée.
-- En tant que vendeur, je veux éditer mon profil.
+_- En tant que vendeur, je veux m'inscrire à un nouveau compte vendeur.
+_- En tant que vendeur, je veux me connecter à mon compte vendeur de manière sécurisée.
+\*- En tant que vendeur, je veux éditer mon profil.
+
 - En tant que vendeur, je veux ajouter et gérer mes produits à vendre.
 - En tant que vendeur, je veux mettre à jour la disponibilité du stock et les prix de mes produits.
 

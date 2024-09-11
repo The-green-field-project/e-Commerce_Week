@@ -1,5 +1,6 @@
 // seed.js
 const { Connection, models } = require("../database"); // Ajuster le chemin si nécessaire
+const bcrypt = require("bcrypt"); // For hashing passwords
 const { User, Category, Product, Order, OrderItem } = models;
 
 const seedDatabase = async () => {
@@ -8,23 +9,21 @@ const seedDatabase = async () => {
     await Connection.authenticate();
     console.log("🟢 Connected to the database successfully.");
 
-    // Define seed data for Users
+    // Define seed data for Users with hashed passwords
     const users = [
       {
         username: "adminUser",
         email: "admin@example.com",
-        password: "securepassword", // En production, assurez-vous de hacher les mots de passe
+        password: "securepassword", // Will be hashed
         role: "admin",
-        fullName: "Foulen ben Falten",
         wishlist: [],
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         username: "clientUser",
-        fullName: "Foulen ben Falten",
         email: "client@example.com",
-        password: "securepassword", // En production, assurez-vous de hacher les mots de passe
+        password: "securepassword", // Will be hashed
         role: "client",
         wishlist: [],
         createdAt: new Date(),
@@ -32,15 +31,19 @@ const seedDatabase = async () => {
       },
       {
         username: "sellerUser",
-        fullName: "Foulen ben Falten",
         email: "seller@example.com",
-        password: "securepassword", // En production, assurez-vous de hacher les mots de passe
+        password: "securepassword", // Will be hashed
         role: "seller",
         wishlist: [],
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     ];
+
+    // Hash passwords before seeding users
+    for (let user of users) {
+      user.password = await bcrypt.hash(user.password, 10);
+    }
 
     // Seed data for Categories
     const categories = [
