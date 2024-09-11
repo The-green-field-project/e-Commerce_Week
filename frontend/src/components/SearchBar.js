@@ -1,4 +1,3 @@
-// SearchBar.js
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";

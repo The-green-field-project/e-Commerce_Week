@@ -78,7 +78,7 @@ function AppContent() {
           <Route
             path="/register"
             element={
-              isAuthenticated ? (
+              !isAuthenticated ? (
                 <Register register={register} />
               ) : (
                 <Navigate to="/" />
