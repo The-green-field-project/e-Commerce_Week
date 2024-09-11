@@ -3,6 +3,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const cors = require("cors");
+const authMiddleware = require("./middlewares/authMiddleware.js");
 
 // App configuration
 dotenv.config();
@@ -12,6 +13,9 @@ const app = express();
 app.use(cors()); // Handle cross-origin requests
 app.use(express.json()); // Parse JSON request bodies
 app.use(morgan("dev")); // Log HTTP requests
+
+// Auth middlewares globalemenet
+// app.use(authMiddleware);
 
 // Database connection
 const db = require("./database/index.js");

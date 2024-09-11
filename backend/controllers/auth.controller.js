@@ -3,6 +3,7 @@ const { models } = require("../database");
 const bcrypt = require("bcrypt"); // For hashing passwords
 const jwt = require("jsonwebtoken"); // For generating JWT tokens
 const { Op } = require("sequelize");
+
 // Secret key for JWT
 const SECRET_KEY = process.env.JWT_SECRET;
 
