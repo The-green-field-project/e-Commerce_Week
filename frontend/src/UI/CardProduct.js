@@ -5,6 +5,11 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { Box, Button, IconButton, Paper, Typography } from "@mui/material";
 import React from "react";
 
+const hundlePost = ()=>{
+  console.log("hello")
+}
+
+
 /* Main ProductCard Component */
 const ProductCard = ({ product, addToCart, viewProduct }) => {
   const {
@@ -119,7 +124,7 @@ const ProductCard = ({ product, addToCart, viewProduct }) => {
 
         {/* Add To Cart Button - Visible on Hover */}
         <Button
-          onClick={addToCart}
+          onClick={hundlePost}
           variant="contained"
           className="hoverButton"
           sx={{

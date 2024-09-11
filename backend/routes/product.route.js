@@ -22,4 +22,7 @@ router.put("/:id", productController.updateProduct);
 // Delete a product by ID
 router.delete("/:id", productController.deleteProduct);
 
+
+
+
 module.exports = router;

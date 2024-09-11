@@ -1,4 +1,3 @@
-import ComputerIcon from "@mui/icons-material/Computer";
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Button from "./UI/ButtonPrimary.js";
@@ -6,14 +5,20 @@ import Button from "./UI/ButtonPrimary.js";
 import Footer from "./UI/Footer.js";
 import Header from "./UI/Header.js";
 
+
+
+
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment } from "./redux/counterSlice";
 import { original } from "@reduxjs/toolkit";
-
+import Register from "./Components/Register/Register.js";
+import Login from "./Components/Register/Login.js";
+import SignUpForm from "./UI/FormSignUp.js";
 const Counter = () => {
   const count = useSelector((state) => state.counter.value);
   const dispatch = useDispatch();
+
 
   return (
     <div>
@@ -23,6 +28,8 @@ const Counter = () => {
     </div>
   );
 };
+
+
 
 // Import your pages/components
 const Home = () => {
@@ -58,12 +65,17 @@ const NotFound = () => {
 export default function App() {
   return (
     <Router>
+       
       <Header />
+      
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="register" element= {<Register/>}/>
+          <Route path="login" element= {<Login/>}/>
+          <Route path="aa" element= {<SignUpForm/>}/>
         </Routes>
       </main>
       <Footer />
