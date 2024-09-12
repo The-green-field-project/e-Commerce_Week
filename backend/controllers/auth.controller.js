@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken"); // For generating JWT tokens
 const { Op } = require("sequelize");
 
 // Secret key for JWT
-const SECRET_KEY = process.env.JWT_SECRET;
+const SECRET_KEY = "baboucha12";
 
 // Function for user registration
 exports.register = async (req, res) => {
@@ -36,7 +36,8 @@ exports.register = async (req, res) => {
 
     res.status(201).json({ message: "Registration successful", token });
   } catch (error) {
-    res.status(500).json({ error: "Failed to register the user" });
+    // res.status(500).json({ error: "Failed to register the user" });
+    throw error
   }
 };
 

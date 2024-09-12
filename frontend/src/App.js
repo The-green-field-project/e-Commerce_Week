@@ -71,7 +71,7 @@ function AppContent() {
           <Route
             path="/login"
             element={
-              !isAuthenticated ? <Login login={login} /> : <Navigate to="/" />
+              !isAuthenticated ? <Login login={login} /> : <Navigate to="/login" />
             }
           />{" "}
           {/* Login Page, redirects to home if already authenticated */}
@@ -81,7 +81,7 @@ function AppContent() {
               !isAuthenticated ? (
                 <Register register={register} />
               ) : (
-                <Navigate to="/" />
+                <Navigate to="/login" />
               )
             }
           />

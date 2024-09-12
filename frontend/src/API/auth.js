@@ -33,7 +33,7 @@ const API = {
     try {
       const response = await axios.post(`${API_URL}/register`, userData);
       const { token } = response.data;
-
+      console.log("datataa",userData)
       // Store the JWT token in localStorage
       localStorage.setItem("umia", token);
 

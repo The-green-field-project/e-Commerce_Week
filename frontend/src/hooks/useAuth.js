@@ -47,7 +47,8 @@ export function useAuth() {
       setIsAuthenticated(true);
       setIsAdmin(jwtDecode(token).role === "admin");
       setIsSeller(jwtDecode(token).role === "seller");
-      navigate("/");
+      navigate("/login");
+
     } catch (error) {
       console.error("Registration failed:", error);
       alert("Error registering user");

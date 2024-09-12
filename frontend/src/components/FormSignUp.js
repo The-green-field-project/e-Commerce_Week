@@ -48,7 +48,7 @@ const SignUpForm = ({ register }) => {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "client",
+    role: "",
   });
   const [error, setError] = useState(""); // State for handling errors
 
@@ -67,6 +67,9 @@ const SignUpForm = ({ register }) => {
       // Call the register method from useAuth hook
       await register(formData);
       console.log("Registration successful");
+      navigate('/login')
+    
+     
     } catch (error) {
       setError(error.message); // Display error message if registration fails
     }
@@ -185,7 +188,7 @@ const SignUpForm = ({ register }) => {
       >
         Already have an account?{" "}
         <Typography
-          onClick={() => navigate("/login")}
+          // onClick={() => navigate("/login")}
           component="span"
           sx={{
             color: "#333",
