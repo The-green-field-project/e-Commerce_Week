@@ -19,12 +19,13 @@ import About from "./pages/About.js";
 import AdminDashboard from "./pages/AdminDashboard.js";
 import Login from "./pages/authentication/login";
 import Register from "./pages/authentication/register";
+import Cart from "./pages/Cart.js";
 import Home from "./pages/Home.js";
 import NotFound from "./pages/NotFound.js";
-import SellerDashboard from "./pages/SellerDashboard.js";
 import Profile from "./pages/Profile.js";
-import Cart from "./pages/Cart.js";
+import SellerDashboard from "./pages/SellerDashboard.js";
 import Wishlist from "./pages/Wishlist.js";
+import ProductDetail from "./pages/ProductDetail.js";
 
 // Main App Component
 export default function App() {
@@ -67,6 +68,7 @@ function AppContent() {
           <Route path="/" element={<Home />} /> {/* Home Page */}
           <Route path="/about" element={<About />} /> {/* About Page */}
           <Route path="/cart" element={<Cart />} /> {/* Cart Page */}
+          <Route path="/product/:productId" element={<ProductDetail />} />
           {/* Authentication Routes */}
           <Route
             path="/login"

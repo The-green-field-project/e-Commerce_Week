@@ -4,7 +4,7 @@ dotenv.config();
 
 // Configuration of the database connection with Sequelize
 const config = {
-  name: "ecommerceWeek",
+  name: process.env.DB_NAME || "ecommerceWeek",
   user: process.env.DB_USER || "root",
   password: process.env.DB_PASSWORD || "rootroot",
   port: process.env.DB_PORT || 3306,

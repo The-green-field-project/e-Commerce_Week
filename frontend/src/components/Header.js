@@ -18,7 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import SearchBar from "../components/SearchBar";
 
@@ -26,6 +26,8 @@ const Header = ({ isAuthenticated, isAdmin, isSeller, logout }) => {
   let links = [
     { label: "Home", path: "/" },
     { label: "About", path: "/about" },
+
+    ///add before this
     { label: "Sign Up", path: "/register" },
   ];
 
@@ -64,6 +66,7 @@ const Header = ({ isAuthenticated, isAdmin, isSeller, logout }) => {
 
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
 
   const handleDrawerToggle = useCallback(() => {
     setMobileOpen((prev) => !prev);
@@ -176,7 +179,16 @@ const Header = ({ isAuthenticated, isAdmin, isSeller, logout }) => {
               </IconButton>
             </>
           ) : (
-            <IconButton color="inherit" onClick={() => navigate("/user")}>
+            <IconButton
+              color="inherit"
+              onClick={() => {
+                const restrictedPaths = ["/login", "/profile", "/user"];
+                if (!restrictedPaths.includes(location.pathname)) {
+                  // navigate("/profile");
+                  window.location.href = "/profile";
+                }
+              }}
+            >
               <PersonOutlineIcon />
             </IconButton>
           )}

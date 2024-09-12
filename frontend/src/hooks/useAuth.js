@@ -37,7 +37,7 @@ export function useAuth() {
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
-      alert("Invalid credentials");
+      //   alert("Invalid credentials");
     }
   };
 
@@ -50,7 +50,7 @@ export function useAuth() {
       navigate("/");
     } catch (error) {
       console.error("Registration failed:", error);
-      alert("Error registering user");
+      // alert("Error registering user", error);
     }
   };
 

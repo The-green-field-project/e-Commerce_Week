@@ -1,4 +1,3 @@
-// seed.js
 const { Connection, models } = require("../database"); // Ajuster le chemin si nécessaire
 const bcrypt = require("bcrypt"); // For hashing passwords
 const { User, Category, Product, Order, OrderItem } = models;
@@ -67,9 +66,15 @@ const seedDatabase = async () => {
         name: "Smartphone",
         price: 299.99,
         stock: 100,
+        productId: "lkjlkjd0298098dlnlsndl",
         description: "Latest model smartphone with all the features",
         seller_id: 3, // Assurez-vous que cela correspond à l'ID d'un utilisateur de rôle 'seller'
         category_id: 1, // Correspond à la catégorie "Electronics"
+        mainImageUrl: "https://example.com/images/smartphone_main.jpg", // URL de l'image principale
+        images: [
+          "https://example.com/images/smartphone1.jpg",
+          "https://example.com/images/smartphone2.jpg",
+        ], // Tableau d'images supplémentaires
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -77,19 +82,31 @@ const seedDatabase = async () => {
         name: "Laptop",
         price: 999.99,
         stock: 50,
+        productId: "lkjlkjd0dlckjs9222",
         description: "High-performance laptop for work and play",
         seller_id: 3, // Assurez-vous que cela correspond à l'ID d'un utilisateur de rôle 'seller'
         category_id: 1, // Correspond à la catégorie "Electronics"
+        mainImageUrl: "https://example.com/images/laptop_main.jpg", // URL de l'image principale
+        images: [
+          "https://example.com/images/laptop1.jpg",
+          "https://example.com/images/laptop2.jpg",
+        ], // Tableau d'images supplémentaires
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         name: "Mystery Novel",
+        productId: "lkjlkjd02222098sss9222",
         price: 14.99,
         stock: 200,
         description: "A thrilling mystery novel with twists and turns",
         seller_id: 3, // Assurez-vous que cela correspond à l'ID d'un utilisateur de rôle 'seller'
         category_id: 2, // Correspond à la catégorie "Books"
+        mainImageUrl: "https://example.com/images/mystery_novel_main.jpg", // URL de l'image principale
+        images: [
+          "https://example.com/images/mystery_novel1.jpg",
+          "https://example.com/images/mystery_novel2.jpg",
+        ], // Tableau d'images supplémentaires
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -133,7 +150,8 @@ const seedDatabase = async () => {
     await Category.bulkCreate(categories);
     console.log("🟢 Categories were seeded successfully.");
 
-    await Product.bulkCreate(products);
+    // Use individualHooks: true to ensure the hooks run for each product
+    await Product.bulkCreate(products, { individualHooks: true });
     console.log("🟢 Products were seeded successfully.");
 
     await Order.bulkCreate(orders);

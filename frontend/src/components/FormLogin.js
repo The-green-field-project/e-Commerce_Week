@@ -2,7 +2,6 @@ import { Box, TextField, Typography, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth"; // Assurez-vous que le chemin est correct
 
 /* Styled Components */
 const PrimaryButton = styled(Button)(() => ({
