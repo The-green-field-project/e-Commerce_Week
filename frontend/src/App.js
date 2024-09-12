@@ -26,6 +26,13 @@ import Profile from "./pages/Profile.js";
 import Cart from "./pages/Cart.js";
 import Wishlist from "./pages/Wishlist.js";
 
+
+
+
+
+
+
+
 // Main App Component
 export default function App() {
   return (
@@ -35,6 +42,10 @@ export default function App() {
     </Router>
   );
 }
+
+
+
+
 
 // Extracted App Content
 function AppContent() {
@@ -64,9 +75,12 @@ function AppContent() {
       <main>
         <Routes>
           {/* Public Routes */}
+          
           <Route path="/" element={<Home />} /> {/* Home Page */}
           <Route path="/about" element={<About />} /> {/* About Page */}
           <Route path="/cart" element={<Cart />} /> {/* Cart Page */}
+
+
           {/* Authentication Routes */}
           <Route
             path="/login"

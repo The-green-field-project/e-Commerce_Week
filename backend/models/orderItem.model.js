@@ -1,4 +1,4 @@
-// models/orderItem.model.js
+
 module.exports = (connection, DataTypes) => {
   const OrderItem = connection.define(
     "OrderItem",

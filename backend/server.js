@@ -32,8 +32,15 @@ db.connectDB();
 const productRoutes = require("./routes/product.route");
 app.use("/api/products", productRoutes);
 
+
+
 const authRoutes = require("./routes/auth.route.js");
 app.use("/api/auth", authRoutes);
+
+
+
+const cartRoutes= require("./routes/cart.route.js");
+app.use('/cart', cartRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3100;
