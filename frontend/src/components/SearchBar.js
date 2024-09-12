@@ -2,6 +2,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputBase } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 import React, { useState } from "react";
+import { useDispatch } from 'react-redux'; // Import useDispatch for dispatching actions
+import { fetchProductsStart, fetchProductsSuccess, fetchProductsFailure } from '../redux/productsSlice'; // Import your actions
 
 /* Styled Components */
 const Search = styled("div")(({ theme }) => ({
@@ -12,11 +14,11 @@ const Search = styled("div")(({ theme }) => ({
     backgroundColor: alpha(theme.palette.common.black, 0.1),
   },
   marginLeft: 0,
-  width: "100%", // Prend toute la largeur disponible
-  display: "flex", // Utilise flex pour aligner l'icône et l'input
-  alignItems: "center", // Centre l'icône verticalement
+  width: "100%", // Takes full width
+  display: "flex", // Flexbox for aligning icon and input
+  alignItems: "center", // Center icon vertically
   [theme.breakpoints.up("md")]: {
-    width: "20em", // Assurez-vous qu'il prend également 100% sur les grands écrans
+    width: "20em", // Adjust width for larger screens
   },
 }));
 
@@ -30,42 +32,40 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
-  flex: 1, // Utilise flex pour s'adapter à l'espace disponible
+  flex: 1, // Flexbox for taking available space
   "& .MuiInputBase-input": {
-    padding: "8px 16px", // Padding simplifié pour un espacement uniforme
-    width: "100%", // Prend toute la largeur disponible
-    transition: "width 0.3s", // Transition douce pour l'élargissement
+    padding: "8px 16px",
+    width: "100%",
+    transition: "width 0.3s",
     [theme.breakpoints.up("md")]: {
-      width: "100%", // Assurez-vous que la largeur s'ajuste aussi pour les grands écrans
+      width: "100%",
     },
   },
 }));
 
-// const SubmitButton = styled(Button)(({ theme }) => ({
-//   marginLeft: theme.spacing(1),
-//   padding: theme.spacing(1),
-//   fontSize: "8px",
-//   color: theme.palette.common.black, // Définit la couleur de la police en noir
-//   backgroundColor: "transparent", // Définit le fond transparent
-//   "&:hover": {
-//     backgroundColor: alpha(theme.palette.common.black, 0.1), // Garde un effet au survol si nécessaire
-//   },
-//   boxShadow: "none", // Enlève l'ombre
-// }));
-
 const SearchBar = ({ placeholder = "What are you looking for?" }) => {
   const [searchValue, setSearchValue] = useState("");
+  const dispatch = useDispatch(); 
 
   const handleChange = (event) => {
     setSearchValue(event.target.value);
-    console.log("Submitted value:", searchValue);
-    // Ajoutez ici votre logique de changement
+  };
+
+  const handleSearch = async (searched) => {
+    dispatch(fetchProductsStart());
+
+    try {
+      const response = await fetch(`http://localhost:3100/api/products/search/${searched}`);
+      const data = await response.json();
+      dispatch(fetchProductsSuccess(data));
+    } catch (error) {
+      dispatch(fetchProductsFailure(error.message));
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Submitted value:", searchValue);
-    // Ajoutez ici votre logique de soumission
+    handleSearch(searchValue);
   };
 
   return (
@@ -74,15 +74,26 @@ const SearchBar = ({ placeholder = "What are you looking for?" }) => {
         placeholder={placeholder}
         inputProps={{ "aria-label": "search" }}
         onChange={handleChange}
+        value={searchValue}
       />
       <IconButton onClick={handleSubmit}>
         <SearchIcon />
       </IconButton>
-      {/* <SubmitButton type="submit" variant="contained">
-        Search
-      </SubmitButton> */}
     </Search>
   );
 };
 
 export default SearchBar;
+
+
+
+
+
+
+
+
+
+  
+
+
+

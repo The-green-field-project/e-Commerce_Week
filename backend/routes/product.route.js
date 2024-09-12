@@ -9,6 +9,7 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
+  searchProducts
 } = require("../controllers/product.controller.js");
 
 //* Routes
@@ -27,5 +28,11 @@ router.put("/:id", updateProduct);
 
 // Delete a product by ID
 router.delete("/:id", deleteProduct);
+
+
+
+router.get('/search/:name', searchProducts);
+
+// router.post('/search', searchProducts);
 
 module.exports = router;

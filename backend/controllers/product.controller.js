@@ -1,5 +1,7 @@
 // Import necessary modules
 const { models } = require("../database"); // Import models from your database setup
+const { Op } = require('sequelize');
+const { name } = require("../database/config");
 
 // Controller function to get all products
 exports.getAllProducts = async (req, res) => {
@@ -72,3 +74,30 @@ exports.deleteProduct = async (req, res) => {
     res.status(500).json({ error: "Failed to delete the product" });
   }
 };
+
+
+
+
+
+exports.searchProducts = async (req, res) => {
+  const { name } = req.params
+  try {
+  
+    const whereClause = {
+      name: {
+        [Op.like]: `%${name}%`
+      }
+    };
+
+  
+    const products = await models.Product.findAll({ where: whereClause });
+    res.json(products);
+  } catch (error) {
+    console.error('Error in searchProducts:', error.message); 
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+}
+
+
+
+

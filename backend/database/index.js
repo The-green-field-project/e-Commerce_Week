@@ -19,6 +19,7 @@ const models = {
   Product: require("../models/product.model")(Connection, DataTypes),
   Order: require("../models/order.model")(Connection, DataTypes),
   OrderItem: require("../models/orderItem.model")(Connection, DataTypes),
+
 };
 
 // Define associations / Relationships between tables

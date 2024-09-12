@@ -1,8 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "./rootReducer"; // Importez vos reducers
 
-const store = configureStore({
-  reducer: rootReducer,
+import { configureStore } from "@reduxjs/toolkit";
+import productsReducer from "./productsSlice"
+
+export const store = configureStore({
+  reducer: {
+    products: productsReducer, // Key here should match your state slice
+  },
 });
 
 export default store;

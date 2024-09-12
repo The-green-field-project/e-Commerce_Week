@@ -142,4 +142,7 @@ exports.changeUserPassword = async (req, res) => {
     console.error("Error changing password:", error);
     res.status(500).json({ error: "Failed to change password" });
   }
+
 };
+
+
